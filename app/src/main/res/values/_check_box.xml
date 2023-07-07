@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CheckBox">
+        <item name="android:textSize">25sp</item>
+        <item name="android:button">?android:attr/listChoiceIndicatorMultiple</item>
+        <item name="android:clickable">true</item>
+    </style>
+</resources>

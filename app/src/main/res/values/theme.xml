@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MainTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:buttonStyle">@style/Button</item>
+        <item name="android:imageButtonStyle">@style/Button</item>
+        <item name="android:editTextStyle">@style/EditText</item>
+        <item name="android:textViewStyle">@style/TextView</item>
+        <item name="android:checkboxStyle">@style/CheckBox</item>
+        <item name="android:fontFamily">@font/robotomono_variablefont_wght</item>
+    </style>
+</resources>
