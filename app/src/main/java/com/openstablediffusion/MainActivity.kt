@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
@@ -85,6 +86,7 @@ class MainActivity : AppCompatActivity(), MainInterface {
 
             id = response.get("id").toString()
             generation.id  = id
+            Log.d("id", id)
             val headers = mapOf(
                 "accept" to "application/json"
             )
