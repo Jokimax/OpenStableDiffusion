@@ -235,8 +235,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="224dp"
         android:layout_marginTop="355dp"
+        android:layout_marginEnd="37dp"
+        android:layout_marginRight="37dp"
+        android:layout_marginBottom="20dp"
         android:hint="0000000000"
         android:singleLine="true"
+        app:layout_constraintBottom_toTopOf="@+id/nsfw"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/prompt" />
 
