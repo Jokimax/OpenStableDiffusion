@@ -74,21 +74,18 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="224dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="11dp"
         android:layout_marginBottom="21dp"
         android:text="Width"
         app:layout_constraintBottom_toTopOf="@+id/steps"
         app:layout_constraintEnd_toStartOf="@+id/width"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/prompt" />
 
     <EditText
         android:id="@+id/width"
         android:layout_width="73dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="300dp"
         android:layout_marginTop="55dp"
         android:layout_marginEnd="38dp"
         android:layout_marginBottom="16dp"
@@ -96,7 +93,6 @@
         android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@+id/steps"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/prompt" />
 
     <TextView
@@ -117,7 +113,6 @@
         android:id="@+id/steps"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="224dp"
         android:layout_marginTop="115dp"
         android:layout_marginEnd="37dp"
         android:layout_marginBottom="16dp"
@@ -125,7 +120,6 @@
         android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@+id/seed"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/prompt" />
 
     <TextView
@@ -146,14 +140,12 @@
         android:id="@+id/seed"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="224dp"
         android:layout_marginTop="175dp"
         android:layout_marginEnd="37dp"
         android:layout_marginBottom="16dp"
         android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@+id/promptStrength"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/prompt" />
 
     <TextView
@@ -174,7 +166,6 @@
         android:id="@+id/promptStrength"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="224dp"
         android:layout_marginTop="235dp"
         android:layout_marginEnd="37dp"
         android:layout_marginBottom="16dp"
@@ -182,7 +173,6 @@
         android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@+id/imageStrength"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/prompt" />
 
     <TextView
@@ -204,7 +194,6 @@
         android:id="@+id/imageStrength"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="224dp"
         android:layout_marginTop="295dp"
         android:layout_marginEnd="37dp"
         android:layout_marginBottom="16dp"
@@ -212,7 +201,6 @@
         android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@+id/apikey"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/prompt" />
 
     <TextView
@@ -233,7 +221,6 @@
         android:id="@+id/apikey"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="224dp"
         android:layout_marginTop="355dp"
         android:layout_marginEnd="37dp"
         android:layout_marginRight="37dp"
@@ -242,7 +229,6 @@
         android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@+id/nsfw"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/prompt" />
 
     <CheckBox
