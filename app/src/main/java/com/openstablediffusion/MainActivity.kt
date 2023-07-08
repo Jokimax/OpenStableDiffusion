@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
+import android.view.ViewTreeObserver
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
@@ -22,12 +23,13 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.net.URL
 
-class MainActivity : AppCompatActivity(), MainInterface {
+class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWindowFocusChangeListener {
     private val parameters: Parameters = Parameters()
     private lateinit var errorElement: TextView
     private lateinit var id: String
     private lateinit var generationCoroutine: Job
     private var pickedImage: Bitmap? = null
+    private var hasFocus: Boolean = false
     private val apiUrl: String = "https://stablehorde.net/api/v2/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,6 +126,9 @@ class MainActivity : AppCompatActivity(), MainInterface {
                 getJSONObject(0).get("seed").toString()
             val img = URL(imgUrl)
             var imageData = img.readBytes()
+            while(!hasFocus) {
+                delay(500)
+            }
             runOnUiThread {
                 showImage(imageData, seedUsed, request, prompt)
             }
@@ -186,4 +191,9 @@ class MainActivity : AppCompatActivity(), MainInterface {
         val byteArray = stream.toByteArray()
         return Base64.encodeToString(byteArray, Base64.DEFAULT).replace("\n","")
     }
+
+    override fun onWindowFocusChanged(focused: Boolean){
+        hasFocus = focused
+    }
 }
+
