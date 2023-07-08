@@ -1,6 +1,7 @@
 package com.openstablediffusion
 
 import android.graphics.BitmapFactory
+import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -64,12 +65,12 @@ class ImageDisplay : Fragment() {
             FileOutputStream(imageFile).use { outputStream ->
                 outputStream.write(imageData)
                 outputStream.flush()
+                MediaScannerConnection.scanFile(context, arrayOf(imageFile.absolutePath), null, null)
+                val savedElement = view.findViewById<TextView>(R.id.saved)
+                savedElement.text = "Image Saved"
             }
         } catch (e: IOException) {
             mainInterface.displayError(e.toString())
-            return
         }
-        val savedElement = view.findViewById<TextView>(R.id.saved)
-        savedElement.text = "Image Saved"
     }
 }

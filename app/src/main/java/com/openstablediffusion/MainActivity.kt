@@ -22,7 +22,6 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.net.URL
 
-
 class MainActivity : AppCompatActivity(), MainInterface {
     private val parameters: Parameters = Parameters()
     private lateinit var errorElement: TextView
