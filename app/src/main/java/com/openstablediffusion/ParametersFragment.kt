@@ -11,6 +11,9 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
@@ -18,7 +21,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import kotlin.math.ceil
 
 
-class Parameters : Fragment() {
+class ParametersFragment : Fragment() {
     private lateinit var view: View
     private lateinit var mainInterface: MainInterface
     private lateinit var promptElement: EditText
@@ -135,31 +138,31 @@ class Parameters : Fragment() {
             width = ceil(width/64)*64
         }
 
+        val headers = mapOf(
+            "Content-Type" to "application/json",
+            "accept" to "application/json",
+            "apikey" to if(apikey==""){"0000000000"}else{"$apikey"}
+        )
         // Creates the HTTP request based on selected generation type
         when (generationType) {
-            GenerationType.TXT2IMG -> txt2img(prompt, steps, promptStrength, apikey,
-                nsfw, censor, seed, height, width)
-            GenerationType.IMG2IMG -> img2img(prompt, steps, promptStrength, apikey,
-                nsfw, censor, seed, height, width)
+            GenerationType.TXT2IMG -> txt2img(prompt, steps, promptStrength,
+                nsfw, censor, seed, height, width, headers)
+            GenerationType.IMG2IMG -> img2img(prompt, steps, promptStrength,
+                nsfw, censor, seed, height, width, headers)
         }
     }
 
     private fun txt2img(prompt: String,
                         steps: Int,
                         promptStrength: Float,
-                        apikey: String,
                         nsfw: Boolean,
                         censor: Boolean,
                         seed: String,
                         height: Double,
-                        width: Double) {
+                        width: Double,
+                        headers: Map<String, String>) {
 
         // Create the request with all the necessary parameters
-        val headers = mapOf(
-            "Content-Type" to "application/json",
-            "accept" to "application/json",
-            "apikey" to if(apikey==""){"0000000000"}else{"$apikey"}
-        )
         val params = """
         {
             "cfg_scale": $promptStrength,
@@ -183,18 +186,21 @@ class Parameters : Fragment() {
             .headers(headers.toHeaders())
             .post(requestBody.toRequestBody("application/json".toMediaType()))
             .build()
-        mainInterface.startGenerating(request, prompt)
+        val generationCoroutine = CoroutineScope(Dispatchers.IO).launch {
+            mainInterface.generateImage(request, prompt)
+        }
+        mainInterface.setGenerationCoroutine(generationCoroutine)
     }
 
     private fun img2img(prompt: String,
                         steps: Int,
                         promptStrength: Float,
-                        apikey: String,
                         nsfw: Boolean,
                         censor: Boolean,
                         seed: String,
                         height: Double,
-                        width: Double) {
+                        width: Double,
+                        headers: Map<String, String>) {
 
         val imageData = mainInterface.getImage()
 
@@ -211,11 +217,6 @@ class Parameters : Fragment() {
         }
 
         // Create the request with all the necessary parameters
-        val headers = mapOf(
-            "Content-Type" to "application/json",
-            "accept" to "application/json",
-            "apikey" to if(apikey==""){"0000000000"}else{"$apikey"}
-        )
         val params = """
         {
             "cfg_scale": $promptStrength,
@@ -242,6 +243,9 @@ class Parameters : Fragment() {
             .headers(headers.toHeaders())
             .post(requestBody.toRequestBody("application/json".toMediaType()))
             .build()
-        mainInterface.startGenerating(request, prompt)
+        val generationCoroutine = CoroutineScope(Dispatchers.IO).launch {
+            mainInterface.generateImage(request, prompt)
+        }
+        mainInterface.setGenerationCoroutine(generationCoroutine)
     }
 }

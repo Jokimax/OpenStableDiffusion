@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
-class Generation : Fragment() {
+class GenerationFragment : Fragment() {
     private lateinit var view: View
     private lateinit var mainInterface: MainInterface
     private lateinit var timerElement: TextView

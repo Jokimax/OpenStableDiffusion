@@ -11,13 +11,16 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.Request
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
 
-class ImageDisplay : Fragment() {
+class ImageDisplayFragment : Fragment() {
     private lateinit var view: View
     private lateinit var mainInterface: MainInterface
     public lateinit var imageData: ByteArray
@@ -45,7 +48,7 @@ class ImageDisplay : Fragment() {
         view.findViewById<TextView>(R.id.seedDisplay).text = "Seed used: " + seedUsed
 
         val regenerateElement = view.findViewById<Button>(R.id.regenerate)
-        regenerateElement.setOnClickListener { mainInterface.startGenerating(request, prompt) }
+        regenerateElement.setOnClickListener { regenerateImage() }
 
         val generateElement = view.findViewById<Button>(R.id.generateNew)
         generateElement.setOnClickListener { mainInterface.showParameters() }
@@ -55,6 +58,13 @@ class ImageDisplay : Fragment() {
 
         val saveElement = view.findViewById<Button>(R.id.save)
         saveElement.setOnClickListener { saveImage() }
+    }
+
+    private fun regenerateImage() {
+        val generationCoroutine = CoroutineScope(Dispatchers.IO).launch {
+            mainInterface.generateImage(request, prompt)
+        }
+        mainInterface.setGenerationCoroutine(generationCoroutine)
     }
 
     private fun saveImage() {
