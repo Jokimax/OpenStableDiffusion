@@ -1,1 +1,1 @@
-A simple app for generating images using stable diffusion
+An app for generating images using AI
