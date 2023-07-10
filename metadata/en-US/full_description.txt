@@ -1,0 +1,1 @@
+A simple open source app for generating images images using stable diffusion. Just enter the necessary parameters and generate the image.

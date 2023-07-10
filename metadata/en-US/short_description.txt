@@ -1,0 +1,1 @@
+A simple app for generating images using stable diffusion

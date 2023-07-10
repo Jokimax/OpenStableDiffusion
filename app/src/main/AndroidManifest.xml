@@ -14,7 +14,7 @@
         android:icon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.MainTheme"
-        tools:targetApi="16">
+        tools:targetApi="18">
         <activity
             android:name=".MainActivity"
             android:exported="true">
