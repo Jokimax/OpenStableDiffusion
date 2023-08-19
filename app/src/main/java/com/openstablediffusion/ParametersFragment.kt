@@ -14,10 +14,14 @@ import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONArray
+import org.json.JSONObject
 import kotlin.math.ceil
 
 
@@ -26,6 +30,7 @@ class ParametersFragment : Fragment() {
     private lateinit var mainInterface: MainInterface
     private lateinit var promptElement: EditText
     private lateinit var generationTypeElement: Spinner
+    private lateinit var generationModelElement: Spinner
     private lateinit var imageElement: ImageButton
     private lateinit var heightElement: EditText
     private lateinit var widthElement: EditText
@@ -66,6 +71,14 @@ class ParametersFragment : Fragment() {
             GenerationType.values()
         )
 
+        generationModelElement = view.findViewById(R.id.model)
+        generationModelElement.adapter = ArrayAdapter(
+            requireContext(),
+            R.layout.spinneritem,
+            arrayOf("Default")
+        )
+        CoroutineScope(Dispatchers.IO).launch { getModels() }
+
         imageElement = view.findViewById(R.id.upload)
         imageElement.setOnClickListener { mainInterface.uploadImage() }
 
@@ -93,13 +106,18 @@ class ParametersFragment : Fragment() {
         censorElement = view.findViewById(R.id.censor)
 
         generateElement = view.findViewById(R.id.generate)
-        generateElement.setOnClickListener { generateRequest() }
+        generateElement.setOnClickListener {
+            generateRequest()
+            CoroutineScope(Dispatchers.IO).launch { getModels() }
+        }
     }
 
     private fun generateRequest() {
         mainInterface.displayError("")
 
         val generationType: Any = generationTypeElement.selectedItem
+
+        val model: String = generationModelElement.selectedItem.toString()
 
         // Make sure all the necessary parameters are filled in
         val prompt: String = promptElement.text.toString()
@@ -145,14 +163,15 @@ class ParametersFragment : Fragment() {
         )
         // Creates the HTTP request based on selected generation type
         when (generationType) {
-            GenerationType.TXT2IMG -> txt2img(prompt, steps, promptStrength,
+            GenerationType.TXT2IMG -> txt2img(prompt, model, steps, promptStrength,
                 nsfw, censor, seed, height, width, headers)
-            GenerationType.IMG2IMG -> img2img(prompt, steps, promptStrength,
+            GenerationType.IMG2IMG -> img2img(prompt, model, steps, promptStrength,
                 nsfw, censor, seed, height, width, headers)
         }
     }
 
     private fun txt2img(prompt: String,
+                        model: String,
                         steps: Int,
                         promptStrength: Float,
                         nsfw: Boolean,
@@ -178,6 +197,7 @@ class ParametersFragment : Fragment() {
             "prompt": "$prompt",
             "nsfw": $nsfw,
             "censor_nsfw": $censor,
+            ${if(model=="Default"){""}else{"\"models\": [\"$model\"],"}}
             "r2": true
         }
         """.trimIndent()
@@ -193,6 +213,7 @@ class ParametersFragment : Fragment() {
     }
 
     private fun img2img(prompt: String,
+                        model: String,
                         steps: Int,
                         promptStrength: Float,
                         nsfw: Boolean,
@@ -235,6 +256,7 @@ class ParametersFragment : Fragment() {
             "prompt": "$prompt",
             "nsfw": $nsfw,
             "censor_nsfw": $censor,
+            ${if(model=="Default"){""}else{"\"models\": [\"$model\"],"}}
             "r2": true
         }
         """.trimIndent()
@@ -247,5 +269,29 @@ class ParametersFragment : Fragment() {
             mainInterface.generateImage(request, prompt)
         }
         mainInterface.setGenerationCoroutine(generationCoroutine)
+    }
+
+     private suspend fun getModels() {
+         var models: Array<String> = arrayOf("Default")
+         val client = OkHttpClient()
+         val request = Request.Builder()
+            .url(apiUrl + "status/models?type=image")
+            .build()
+         var response: Any?
+
+         response = client.newCall(request).execute()
+         response = response.body?.string()
+         response = JSONArray(response)
+
+         for (i in 0 until response.length()){
+             models += response.getJSONObject(i).get("name").toString()
+         }
+         val act = activity ?: return
+         act.runOnUiThread {
+             generationModelElement.adapter = ArrayAdapter(
+             requireContext(),
+             R.layout.spinneritem,
+             models
+         )}
     }
 }
