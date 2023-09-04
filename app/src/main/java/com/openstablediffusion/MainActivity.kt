@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
     private val parameters: ParametersFragment = ParametersFragment()
     private lateinit var errorElement: TextView
     private lateinit var generationCoroutine: Job
-    private var pickedImage: Bitmap? = null
+    private lateinit var pickedImage: Bitmap
     private var hasFocus: Boolean = false
     private val apiUrl: String = "https://stablehorde.net/api/v2/"
 
@@ -224,9 +224,28 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
             val pickedPhoto = data.data
             if (pickedPhoto != null) {
                 pickedImage = MediaStore.Images.Media.getBitmap(this.contentResolver,pickedPhoto)
+                pickedImage = resizeImage(pickedImage)
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    // Resizes the image to be within 3072 by 3072 pixels
+    private fun resizeImage(image: Bitmap) : Bitmap{
+        var temp = image
+        var width = image.width
+        var height = image.height
+        if(width > 3072){
+            val aspectRatio = height/width
+            height = 3072 * aspectRatio
+            temp = Bitmap.createScaledBitmap(temp, 3072, height, false)
+        }
+        if(height > 3072){
+            val aspectRatio = width/height
+            width = 3072 * aspectRatio
+            temp = Bitmap.createScaledBitmap(temp, width, 3072, false)
+        }
+        return temp
     }
 
     //  Returns the currently selected image as Base64 encoded string
