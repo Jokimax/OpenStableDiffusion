@@ -5,273 +5,210 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/prompt"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginBottom="4dp"
-        android:gravity="center"
-        android:hint="@string/promptExample"
-        android:singleLine="true"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/type"
+    <ScrollView
+        android:id="@+id/parameters"
+        android:layout_width="fill_parent"
+        android:layout_height="1200dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Spinner
-        android:id="@+id/type"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="-10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="600dp">
 
-    <Spinner
-        android:id="@+id/model"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <EditText
+                android:id="@+id/prompt"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:hint="@string/promptExample"
+                android:singleLine="true"
+                android:textSize="20sp" />
 
-    <ImageButton
-        android:id="@+id/upload"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="3dp"
-        android:src="@drawable/baseline_upload_24"
-        app:layout_constraintBottom_toTopOf="@+id/width"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <Spinner
+                android:id="@+id/type"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="-10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/prompt" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="110dp"
-        android:layout_marginEnd="18dp"
-        android:layout_marginBottom="26dp"
-        android:text="@string/height"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toStartOf="@+id/height"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <Spinner
+                android:id="@+id/model"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="-10dp"
+                app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/height"
-        android:layout_width="73dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="105dp"
-        android:layout_marginBottom="21dp"
-        android:inputType="number"
-        android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <ImageButton
+                android:id="@+id/upload"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:gravity="center"
+                android:src="@drawable/baseline_upload_24"
+                android:layout_marginStart="240dp"
+                android:layout_marginTop="-75dp"
+                android:layout_marginBottom="75dp" />
 
+            <TextView
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/height"
+                android:layout_marginBottom="10dp" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="110dp"
-        android:layout_marginEnd="11dp"
-        android:layout_marginBottom="21dp"
-        android:text="@string/width"
-        app:layout_constraintBottom_toTopOf="@+id/steps"
-        app:layout_constraintEnd_toStartOf="@+id/width"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <EditText
+                android:id="@+id/height"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:singleLine="true"
+                android:layout_marginTop="10dp" />
 
-    <EditText
-        android:id="@+id/width"
-        android:layout_width="73dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="105dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:inputType="number"
-        android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/steps"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <TextView
+                android:id="@+id/textView4"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/width"
+                android:layout_marginTop="10dp" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="170dp"
-        android:layout_marginBottom="26dp"
-        android:text="@string/steps"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <EditText
+                android:id="@+id/width"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:singleLine="true"
+                android:layout_marginTop="10dp" />
 
-    <EditText
-        android:id="@+id/steps"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="165dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:inputType="numberDecimal"
-        android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/seed"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <TextView
+                android:id="@+id/textView"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/steps"
+                android:layout_marginTop="10dp" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="230dp"
-        android:layout_marginBottom="26dp"
-        android:text="@string/seed"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <EditText
+                android:id="@+id/steps"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:layout_marginTop="10dp" />
 
-    <EditText
-        android:id="@+id/seed"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="225dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/promptStrength"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <TextView
+                android:id="@+id/textView2"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/seed"
+                android:layout_marginTop="10dp" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="290dp"
-        android:layout_marginBottom="26dp"
-        android:text="@string/promptStrength"
-        app:layout_constraintBottom_toTopOf="@+id/textView5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <EditText
+                android:id="@+id/seed"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_marginTop="10dp" />
 
-    <EditText
-        android:id="@+id/promptStrength"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="285dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:inputType="numberDecimal"
-        android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/imageStrength"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <TextView
+                android:id="@+id/textView3"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/promptStrength"
+                android:layout_marginTop="10dp" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="350dp"
-        android:layout_marginBottom="26dp"
-        android:text="@string/imageStrength"
-        app:layout_constraintBottom_toTopOf="@+id/textView6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <EditText
+                android:id="@+id/promptStrength"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/imageStrength"
+                android:layout_marginTop="10dp" />
 
 
-    <EditText
-        android:id="@+id/imageStrength"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="345dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:inputType="numberDecimal"
-        android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/apikey"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <EditText
+                android:id="@+id/imageStrength"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:layout_marginTop="10dp" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="410dp"
-        android:layout_marginBottom="26dp"
-        android:text="@string/apikey"
-        app:layout_constraintBottom_toTopOf="@+id/nsfw"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <TextView
+                android:id="@+id/textView6"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/apikey"
+                android:singleLine="true"
+                android:layout_marginTop="10dp" />
 
-    <EditText
-        android:id="@+id/apikey"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="405dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="20dp"
-        android:hint="@string/defaultApikey"
-        android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/nsfw"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <EditText
+                android:id="@+id/apikey"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/defaultApikey"
+                android:singleLine="true"
+                android:layout_marginTop="10dp" />
 
-    <CheckBox
-        android:id="@+id/nsfw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="460dp"
-        android:layout_marginEnd="108dp"
-        android:layout_marginBottom="36dp"
-        android:gravity="center"
-        android:layoutDirection="rtl"
-        android:text="@string/nsfw"
-        app:layout_constraintBottom_toTopOf="@+id/censor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <CheckBox
+                android:id="@+id/nsfw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layoutDirection="rtl"
+                android:text="@string/nsfw"
+                android:singleLine="true"
+                android:layout_marginTop="10dp" />
 
-    <CheckBox
-        android:id="@+id/censor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="530dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="37dp"
-        android:gravity="center"
-        android:layoutDirection="rtl"
-        android:text="@string/censor"
-        app:layout_constraintBottom_toTopOf="@+id/generate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+            <CheckBox
+                android:id="@+id/censor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layoutDirection="rtl"
+                android:text="@string/censor"
+                android:singleLine="true"
+                android:layout_marginTop="10dp" />
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/generate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="174dp"
-        android:layout_marginTop="600dp"
-        android:layout_marginEnd="152dp"
-        android:layout_marginBottom="47dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginEnd="160dp"
         android:text="@string/generate"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prompt" />
+        app:layout_constraintTop_toBottomOf="@+id/parameters" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
