@@ -31,6 +31,7 @@ import java.net.URL
 
 class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWindowFocusChangeListener {
     private val parameters: ParametersFragment = ParametersFragment()
+    private val internet: NetworkManager = NetworkManager()
     private lateinit var errorElement: TextView
     private lateinit var generationCoroutine: Job
     private lateinit var pickedImage: Bitmap
@@ -90,6 +91,13 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
 
     // The function that calls a post a request to AI horde
     override suspend fun generateImage(request: Request, prompt: String) {
+        if(!internet.isConnected(this)){
+            runOnUiThread {
+                showParameters()
+                displayError("An error occurred with your internet connection!")
+            }
+            return
+        }
         val client = OkHttpClient()
         var response: Any?
         try {
@@ -98,7 +106,6 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
             runOnUiThread {
                 showGeneration(generation)
             }
-
             // Begin generating the image
             response = client.newCall(request).execute()
             response = response.body?.string()
@@ -127,6 +134,10 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
 
             // Wait for generation to finish
             while (!done) {
+                if(!internet.isConnected(this)){
+                    delay(500)
+                    continue
+                }
                 response = client.newCall(newRequest).execute()
                 response = response.body?.string()
                 response = JSONObject(response)

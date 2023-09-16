@@ -14,18 +14,17 @@ import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
-import org.json.JSONObject
 import kotlin.math.ceil
 
 
 class ParametersFragment : Fragment() {
+    private val internet: NetworkManager = NetworkManager()
     private lateinit var view: View
     private lateinit var mainInterface: MainInterface
     private lateinit var promptElement: EditText
@@ -272,6 +271,13 @@ class ParametersFragment : Fragment() {
     }
 
      private suspend fun getModels() {
+         if(!internet.isConnected(requireContext())){
+             val act = activity ?: return
+             act.runOnUiThread {
+                 mainInterface.displayError("An error occurred with your internet connection!")
+             }
+             return
+         }
          var models: Array<String> = arrayOf("Default")
          val client = OkHttpClient()
          val request = Request.Builder()

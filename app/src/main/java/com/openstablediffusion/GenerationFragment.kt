@@ -14,6 +14,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 
 class GenerationFragment : Fragment() {
+    private val internet: NetworkManager = NetworkManager()
     private lateinit var view: View
     private lateinit var mainInterface: MainInterface
     private lateinit var timerElement: TextView
@@ -41,6 +42,14 @@ class GenerationFragment : Fragment() {
 
     // Cancel the remote generation request
     private fun cancelGeneration() {
+        if(!internet.isConnected(requireContext())){
+            val act = activity ?: return
+            act.runOnUiThread {
+                mainInterface.showParameters()
+                mainInterface.displayError("An error occurred with your internet connection!")
+            }
+            return
+        }
         if(id != null) {
             val client = OkHttpClient()
             val request: Request = Request.Builder().url(apiUrl + "generate/status/" + id).delete().build()
