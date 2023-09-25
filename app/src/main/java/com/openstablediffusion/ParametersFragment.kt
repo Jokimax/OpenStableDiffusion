@@ -1,10 +1,10 @@
 package com.openstablediffusion
 
-import android.R.attr.text
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -41,6 +41,8 @@ class ParametersFragment : Fragment() {
     private lateinit var promptStrengthElement: EditText
     private lateinit var imageStrengthElement: EditText
     private lateinit var apikeyElement: EditText
+    private lateinit var hideApikeyElement: ImageButton
+    private var apikeyHidden: Boolean = true
     private lateinit var nsfwElement: CheckBox
     private lateinit var censorElement: CheckBox
     private lateinit var generateElement: Button
@@ -105,6 +107,9 @@ class ParametersFragment : Fragment() {
         imageStrengthElement.setText("0.4")
 
         apikeyElement = view.findViewById(R.id.apikey)
+
+        hideApikeyElement = view.findViewById(R.id.hideApiKey)
+        hideApikeyElement.setOnClickListener { changeApikeyVisibility() }
 
         nsfwElement = view.findViewById(R.id.nsfw)
 
@@ -307,5 +312,11 @@ class ParametersFragment : Fragment() {
                 )
              )
          }
+    }
+
+    private fun changeApikeyVisibility() {
+        apikeyHidden = !apikeyHidden
+        if(apikeyHidden) apikeyElement.transformationMethod = HideReturnsTransformationMethod.getInstance()
+        else apikeyElement.transformationMethod = PasswordTransformationMethod.getInstance()
     }
 }
