@@ -194,7 +194,8 @@
                 android:layoutDirection="rtl"
                 android:text="@string/censor"
                 android:singleLine="true"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="240dp"/>
         </LinearLayout>
     </ScrollView>
 
