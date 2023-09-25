@@ -68,7 +68,8 @@ class ImageDisplayFragment : Fragment() {
     }
 
     private fun saveImage() {
-        val fileName = "stabledif$prompt$seedUsed.jpg"
+        val promptTemp = prompt.replace(" ", "")
+        val fileName = "stabledif$promptTemp$seedUsed.jpg"
         val imagesDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
         val imageFile = File(imagesDirectory, fileName)
         try {
