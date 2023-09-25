@@ -1,6 +1,10 @@
 package com.openstablediffusion
 
 import android.os.Bundle
+import android.preference.PreferenceManager
+import android.preference.PreferenceManager.*
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
@@ -107,6 +111,18 @@ class ParametersFragment : Fragment() {
         imageStrengthElement.setText("0.4")
 
         apikeyElement = view.findViewById(R.id.apikey)
+        apikeyElement.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                saveApikey(s.toString())
+            }
+
+            override fun afterTextChanged(p0: Editable?) {}
+        })
+        val localPreferences = getDefaultSharedPreferences(requireContext())
+        val apikey = localPreferences.getString("apikey", null)
+        if(apikey != null) apikeyElement.setText(apikey)
 
         hideApikeyElement = view.findViewById(R.id.hideApiKey)
         hideApikeyElement.setOnClickListener { changeApikeyVisibility() }
@@ -318,5 +334,12 @@ class ParametersFragment : Fragment() {
         apikeyHidden = !apikeyHidden
         if(apikeyHidden) apikeyElement.transformationMethod = HideReturnsTransformationMethod.getInstance()
         else apikeyElement.transformationMethod = PasswordTransformationMethod.getInstance()
+    }
+
+    private fun saveApikey(apikey: String) {
+        val localPreferences = getDefaultSharedPreferences(requireContext())
+        val preferenceWriter = localPreferences.edit()
+        preferenceWriter.putString("apikey", apikey)
+        preferenceWriter.apply()
     }
 }
