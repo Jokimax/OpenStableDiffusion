@@ -1,10 +1,13 @@
 package com.openstablediffusion
 
+import android.R.attr.text
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -29,7 +32,7 @@ class ParametersFragment : Fragment() {
     private lateinit var mainInterface: MainInterface
     private lateinit var promptElement: EditText
     private lateinit var generationTypeElement: Spinner
-    private lateinit var generationModelElement: Spinner
+    private lateinit var generationModelElement: AutoCompleteTextView
     private lateinit var imageElement: ImageButton
     private lateinit var heightElement: EditText
     private lateinit var widthElement: EditText
@@ -71,11 +74,14 @@ class ParametersFragment : Fragment() {
         )
 
         generationModelElement = view.findViewById(R.id.model)
-        generationModelElement.adapter = ArrayAdapter(
-            requireContext(),
-            R.layout.spinneritem,
-            arrayOf("Default")
+        generationModelElement.setAdapter(ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_list_item_1,
+                arrayOf("Default Model")
+            )
         )
+        generationModelElement.setText("Default Model")
+        generationModelElement.threshold = 1
         CoroutineScope(Dispatchers.IO).launch { getModels() }
 
         imageElement = view.findViewById(R.id.upload)
@@ -116,7 +122,7 @@ class ParametersFragment : Fragment() {
 
         val generationType: Any = generationTypeElement.selectedItem
 
-        val model: String = generationModelElement.selectedItem.toString()
+        val model: String = generationModelElement.text.toString()
 
         // Make sure all the necessary parameters are filled in
         val prompt: String = promptElement.text.toString()
@@ -196,7 +202,7 @@ class ParametersFragment : Fragment() {
             "prompt": "$prompt",
             "nsfw": $nsfw,
             "censor_nsfw": $censor,
-            ${if(model=="Default"){""}else{"\"models\": [\"$model\"],"}}
+            ${if(model=="Default Model"){""}else{"\"models\": [\"$model\"],"}}
             "r2": true
         }
         """.trimIndent()
@@ -255,7 +261,7 @@ class ParametersFragment : Fragment() {
             "prompt": "$prompt",
             "nsfw": $nsfw,
             "censor_nsfw": $censor,
-            ${if(model=="Default"){""}else{"\"models\": [\"$model\"],"}}
+            ${if(model=="Default Model"){""}else{"\"models\": [\"$model\"],"}}
             "r2": true
         }
         """.trimIndent()
@@ -278,7 +284,7 @@ class ParametersFragment : Fragment() {
              }
              return
          }
-         var models: Array<String> = arrayOf("Default")
+         var models: Array<String> = arrayOf("Default Model")
          val client = OkHttpClient()
          val request = Request.Builder()
             .url(apiUrl + "status/models?type=image")
@@ -294,10 +300,12 @@ class ParametersFragment : Fragment() {
          }
          val act = activity ?: return
          act.runOnUiThread {
-             generationModelElement.adapter = ArrayAdapter(
-             requireContext(),
-             R.layout.spinneritem,
-             models
-         )}
+             generationModelElement.setAdapter(ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_list_item_1,
+                    models
+                )
+             )
+         }
     }
 }
