@@ -46,6 +46,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="-10dp"
                 android:singleLine="true"
+                android:imeOptions="actionNext"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <ImageButton
