@@ -1,5 +1,7 @@
 package com.openstablediffusion
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.preference.PreferenceManager.*
@@ -17,6 +19,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,6 +49,7 @@ class ParametersFragment : Fragment() {
     private lateinit var imageStrengthElement: EditText
     private lateinit var apikeyElement: EditText
     private lateinit var hideApikeyElement: ImageButton
+    private lateinit var infoApikeyElement: TextView
     private var apikeyHidden: Boolean = true
     private lateinit var nsfwElement: CheckBox
     private lateinit var censorElement: CheckBox
@@ -126,6 +130,12 @@ class ParametersFragment : Fragment() {
 
         hideApikeyElement = view.findViewById(R.id.hideApiKey)
         hideApikeyElement.setOnClickListener { changeApikeyVisibility() }
+
+        infoApikeyElement = view.findViewById(R.id.infoApikey)
+        infoApikeyElement.setOnClickListener {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://stablehorde.net/"))
+            startActivity(browserIntent)
+        }
 
         nsfwElement = view.findViewById(R.id.nsfw)
 

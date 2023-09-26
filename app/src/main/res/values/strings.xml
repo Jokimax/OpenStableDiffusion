@@ -20,6 +20,7 @@
     <string name="imageStrength">Image Strength</string>
     <string name="apikey">AI Horde Apikey</string>
     <string name="defaultApikey">0000000000</string>
+    <string name="infoApikey"><u>What\'s this?</u></string>
     <string name="nsfw">Allow NSFW</string>
     <string name="censor">Censor NSFW</string>
     <string name="generate">Generate</string>
