@@ -1,5 +1,6 @@
 package com.openstablediffusion
 
+import android.Manifest
 import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -14,7 +15,6 @@ import android.provider.MediaStore
 import android.util.Base64
 import android.view.ViewTreeObserver
 import android.widget.TextView
-import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -30,6 +30,7 @@ import java.io.IOException
 import java.lang.Integer.max
 import java.net.URL
 import kotlin.math.floor
+
 
 class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWindowFocusChangeListener {
     private val parameters: ParametersFragment = ParametersFragment()
@@ -272,7 +273,7 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
         return Base64.encodeToString(byteArray, Base64.DEFAULT).replace("\n","")
     }
 
-    override fun onWindowFocusChanged(focused: Boolean){
+    override fun onWindowFocusChanged(focused: Boolean) {
         hasFocus = focused
     }
 }

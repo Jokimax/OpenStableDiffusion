@@ -11,8 +11,8 @@ android {
         applicationId "com.openstablediffusion"
         minSdk 18
         targetSdk 34
-        versionCode 14
-        versionName "1.5"
+        versionCode 15
+        versionName "1.6"
     }
 
     buildTypes {
