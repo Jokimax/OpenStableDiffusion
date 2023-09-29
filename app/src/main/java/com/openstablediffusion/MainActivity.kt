@@ -27,7 +27,9 @@ import okhttp3.Request
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.IOException
+import java.lang.Integer.max
 import java.net.URL
+import kotlin.math.floor
 
 class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWindowFocusChangeListener {
     private val parameters: ParametersFragment = ParametersFragment()
@@ -247,14 +249,16 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
         var width = image.width
         var height = image.height
         if(width > 3072){
-            val aspectRatio = height/width
-            height = 3072 * aspectRatio
-            temp = Bitmap.createScaledBitmap(temp, 3072, height, false)
+            val aspectRatio = 3072.0/width
+            width = 3072
+            height = max(1, floor(height * aspectRatio).toInt())
+            temp = Bitmap.createScaledBitmap(temp, width, height, false)
         }
         if(height > 3072){
-            val aspectRatio = width/height
-            width = 3072 * aspectRatio
-            temp = Bitmap.createScaledBitmap(temp, width, 3072, false)
+            val aspectRatio = 3072.0/height
+            height = 3072
+            width = max(1, floor(width * aspectRatio).toInt())
+            temp = Bitmap.createScaledBitmap(temp, width, height, false)
         }
         return temp
     }
