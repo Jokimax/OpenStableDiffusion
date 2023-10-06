@@ -217,23 +217,19 @@
                 android:layoutDirection="rtl"
                 android:text="@string/censor"
                 android:singleLine="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="240dp"/>
+                android:layout_marginTop="10dp" />
+
+            <Button
+                android:id="@+id/generate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/generate"
+                android:textSize="18sp"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="240dp"
+                android:layout_marginStart="160dp"
+                android:layout_marginEnd="160dp"/>
         </LinearLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/generate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginEnd="160dp"
-        android:layout_marginBottom="75dp"
-        android:text="@string/generate"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/parameters" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
