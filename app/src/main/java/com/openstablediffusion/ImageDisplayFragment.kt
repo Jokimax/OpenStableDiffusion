@@ -34,12 +34,11 @@ class ImageDisplayFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         view = inflater.inflate(R.layout.image_display, container, false)
-        initialize()
         return view
     }
 
 
-    private fun initialize() {
+    public fun initialize() {
         mainInterface = activity as MainInterface
 
         val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
