@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
     private val internet: NetworkManager = NetworkManager()
     private lateinit var errorElement: TextView
     private lateinit var generationCoroutine: Job
-    private var pickedImage: Bitmap? = null
+    private lateinit var pickedImage: Bitmap
     private var hasFocus: Boolean = false
     private val apiUrl: String = "https://stablehorde.net/api/v2/"
 
@@ -87,7 +87,6 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
         imageDisplay.seedUsed = seedUsed
         imageDisplay.request = request
         imageDisplay.prompt = prompt
-        imageDisplay.initialize()
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.container, imageDisplay)
         fragmentTransaction.commit()
@@ -239,7 +238,7 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
             val pickedPhoto = data.data
             if (pickedPhoto != null) {
                 pickedImage = MediaStore.Images.Media.getBitmap(this.contentResolver,pickedPhoto)
-                pickedImage = resizeImage(pickedImage!!)
+                pickedImage = resizeImage(pickedImage)
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
