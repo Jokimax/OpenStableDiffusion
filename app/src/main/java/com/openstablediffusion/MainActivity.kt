@@ -87,7 +87,6 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
         imageDisplay.seedUsed = seedUsed
         imageDisplay.request = request
         imageDisplay.prompt = prompt
-        imageDisplay.initialize()
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.container, imageDisplay)
         fragmentTransaction.commit()
