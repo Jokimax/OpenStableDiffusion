@@ -14,6 +14,7 @@
         android:icon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.MainTheme"
+        android:requestLegacyExternalStorage="true"
         tools:targetApi="18">
         <activity
             android:name=".MainActivity"
