@@ -203,6 +203,7 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
                 showImage(imageData, seedUsed, request, prompt)
             }
         } catch (e: IOException) {
+            delay(10)
             runOnUiThread {
                 displayError(e.toString())
                 showParameters()
