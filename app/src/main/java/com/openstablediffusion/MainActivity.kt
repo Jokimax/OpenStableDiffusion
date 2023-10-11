@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
     private lateinit var errorElement: TextView
     private lateinit var generationCoroutine: Job
     private var pickedImage: Bitmap? = null
-    private var hasFocus: Boolean = false
+    private var hasFocus: Boolean = true
     private var safeToChangeFragment: Boolean = true
     private val apiUrl: String = "https://stablehorde.net/api/v2/"
 
