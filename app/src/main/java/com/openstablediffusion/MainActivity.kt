@@ -19,8 +19,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -39,6 +42,7 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
     private lateinit var generationCoroutine: Job
     private var pickedImage: Bitmap? = null
     private var hasFocus: Boolean = false
+    private var safeToChangeFragment: Boolean = true
     private val apiUrl: String = "https://stablehorde.net/api/v2/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,31 +69,58 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
         }
     }
 
-    // Display the main menu for setting parameters
     override fun showParameters() {
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.container, parameters)
-        fragmentTransaction.commit()
+        if(safeToChangeFragment) {
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.container, parameters)
+            fragmentTransaction.commit()
+            return
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            while(!safeToChangeFragment) { delay(10) }
+            runOnUiThread { showParameters() }}
     }
 
     // Display generation info
     private fun showGeneration(generation: GenerationFragment) {
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.container, generation)
-        fragmentTransaction.commit()
+        if(safeToChangeFragment) {
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.container, generation)
+            fragmentTransaction.commit()
+            return
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            while(!safeToChangeFragment) { delay(10) }
+            runOnUiThread { showGeneration(generation) }}
     }
 
     // Display an image once it's generated
     private fun showImage(imageData: ByteArray, seedUsed: String,
                           request: Request, prompt: String){
-        val imageDisplay = ImageDisplayFragment()
-        imageDisplay.imageData = imageData
-        imageDisplay.seedUsed = seedUsed
-        imageDisplay.request = request
-        imageDisplay.prompt = prompt
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.container, imageDisplay)
-        fragmentTransaction.commit()
+        if(safeToChangeFragment) {
+            val imageDisplay = ImageDisplayFragment()
+            imageDisplay.imageData = imageData
+            imageDisplay.seedUsed = seedUsed
+            imageDisplay.request = request
+            imageDisplay.prompt = prompt
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.container, imageDisplay)
+            fragmentTransaction.commit()
+            return
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            while(!safeToChangeFragment) { delay(10) }
+            runOnUiThread { showImage(imageData, seedUsed, request, prompt) }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        safeToChangeFragment = false
+
+    }override fun onResume() {
+        super.onResume()
+        safeToChangeFragment = true
     }
 
     // The function that calls a post a request to AI horde
