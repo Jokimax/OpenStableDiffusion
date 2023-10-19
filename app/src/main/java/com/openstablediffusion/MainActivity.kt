@@ -1,6 +1,7 @@
 package com.openstablediffusion
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -15,7 +16,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Base64
-import android.util.Log
 import android.view.ViewTreeObserver
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -38,15 +38,14 @@ import java.net.URL
 import kotlin.math.floor
 
 
-class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWindowFocusChangeListener {
+class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWindowFocusChangeListener {
     private val parameters: ParametersFragment = ParametersFragment()
     private val internet: NetworkManager = NetworkManager()
+    private val fragments: FragmentManager = FragmentManager()
     private lateinit var errorElement: TextView
     private lateinit var generationCoroutine: Job
     private var pickedImage: Bitmap? = null
     private var hasFocus: Boolean = true
-    private var safeToChangeFragment: Boolean = true
-    private var changedFragment: Boolean = true
     private val apiUrl: String = "https://stablehorde.net/api/v2/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,62 +72,33 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
         }
     }
 
+    @SuppressLint("CommitTransaction")
     override fun showParameters() {
-        changedFragment = false
-        if(safeToChangeFragment) {
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.container, parameters)
-            fragmentTransaction.commit()
-            changedFragment = true
-            return
-        }
-        CoroutineScope(Dispatchers.IO).launch {
-            while(!safeToChangeFragment) { delay(10) }
-            runOnUiThread { showParameters() }
-        }
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.container, parameters)
+        fragments.changeFragment(fragmentTransaction)
     }
 
     // Display generation info
+    @SuppressLint("CommitTransaction")
     private fun showGeneration(generation: GenerationFragment) {
-        if(safeToChangeFragment) {
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.container, generation)
-            fragmentTransaction.commit()
-            return
-        }
-        CoroutineScope(Dispatchers.IO).launch {
-            while(!safeToChangeFragment) { delay(10) }
-            runOnUiThread { showGeneration(generation) }
-        }
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.container, generation)
+        fragments.changeFragment(fragmentTransaction)
     }
 
     // Display an image once it's generated
+    @SuppressLint("CommitTransaction")
     private fun showImage(imageData: ByteArray, seedUsed: String,
                           request: Request, prompt: String){
-        if(safeToChangeFragment) {
-            val imageDisplay = ImageDisplayFragment()
-            imageDisplay.imageData = imageData
-            imageDisplay.seedUsed = seedUsed
-            imageDisplay.request = request
-            imageDisplay.prompt = prompt
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.container, imageDisplay)
-            fragmentTransaction.commit()
-            return
-        }
-        CoroutineScope(Dispatchers.IO).launch {
-            while(!safeToChangeFragment) { delay(10) }
-            runOnUiThread { showImage(imageData, seedUsed, request, prompt) }
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        safeToChangeFragment = false
-
-    }override fun onResume() {
-        super.onResume()
-        safeToChangeFragment = true
+        val imageDisplay = ImageDisplayFragment()
+        imageDisplay.imageData = imageData
+        imageDisplay.seedUsed = seedUsed
+        imageDisplay.request = request
+        imageDisplay.prompt = prompt
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.container, imageDisplay)
+        fragments.changeFragment(fragmentTransaction)
     }
 
     // The function that calls a post a request to AI horde
@@ -267,7 +237,7 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
         pickedImage = newImage
         showParameters()
         CoroutineScope(Dispatchers.IO).launch {
-            while(!changedFragment) { delay(10) }
+            while(!fragments.changedFragment) { delay(10) }
             runOnUiThread { parameters.imageNameElement.text = imageName }
         }
     }
