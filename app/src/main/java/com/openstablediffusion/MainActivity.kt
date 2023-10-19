@@ -9,10 +9,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.util.Base64
+import android.util.Log
 import android.view.ViewTreeObserver
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -43,6 +46,7 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
     private var pickedImage: Bitmap? = null
     private var hasFocus: Boolean = true
     private var safeToChangeFragment: Boolean = true
+    private var changedFragment: Boolean = true
     private val apiUrl: String = "https://stablehorde.net/api/v2/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,15 +74,18 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
     }
 
     override fun showParameters() {
+        changedFragment = false
         if(safeToChangeFragment) {
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.container, parameters)
             fragmentTransaction.commit()
+            changedFragment = true
             return
         }
         CoroutineScope(Dispatchers.IO).launch {
             while(!safeToChangeFragment) { delay(10) }
-            runOnUiThread { showParameters() }}
+            runOnUiThread { showParameters() }
+        }
     }
 
     // Display generation info
@@ -91,7 +98,8 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
         }
         CoroutineScope(Dispatchers.IO).launch {
             while(!safeToChangeFragment) { delay(10) }
-            runOnUiThread { showGeneration(generation) }}
+            runOnUiThread { showGeneration(generation) }
+        }
     }
 
     // Display an image once it's generated
@@ -255,9 +263,13 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
         this.generationCoroutine = generationCoroutine
     }
 
-    override fun setImage(newImage: Bitmap) {
+    override fun setImage(newImage: Bitmap, imageName: String) {
         pickedImage = newImage
         showParameters()
+        CoroutineScope(Dispatchers.IO).launch {
+            while(!changedFragment) { delay(10) }
+            runOnUiThread { parameters.imageNameElement.text = imageName }
+        }
     }
 
     // Allows the user to upload an image
@@ -269,6 +281,7 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
             val pickedPhoto = data.data
             if (pickedPhoto != null) {
+                parameters.imageNameElement.text = getFileName(pickedPhoto)
                 pickedImage = MediaStore.Images.Media.getBitmap(this.contentResolver,pickedPhoto)
                 pickedImage = resizeImage(pickedImage!!)
             }
@@ -307,6 +320,15 @@ class MainActivity : AppCompatActivity(), MainInterface,  ViewTreeObserver.OnWin
 
     override fun onWindowFocusChanged(focused: Boolean) {
         hasFocus = focused
+    }
+
+    private fun getFileName(uri: Uri): String {
+        val returnCursor = contentResolver.query(uri, null, null, null, null)!!
+        val nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+        returnCursor.moveToFirst()
+        val filename = returnCursor.getString(nameIndex)
+        returnCursor.close()
+        return filename
     }
 }
 

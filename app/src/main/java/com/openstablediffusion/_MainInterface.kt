@@ -12,6 +12,6 @@ interface MainInterface {
     fun showParameters()
     fun uploadImage()
     fun getImage(): String?
-    fun setImage(newImage: Bitmap)
+    fun setImage(newImage: Bitmap, imageName: String)
     fun setGenerationCoroutine(generationCoroutine: Job)
 }

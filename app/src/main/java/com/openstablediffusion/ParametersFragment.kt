@@ -38,6 +38,7 @@ class ParametersFragment : Fragment() {
     private lateinit var view: View
     private lateinit var mainInterface: MainInterface
     private lateinit var promptElement: EditText
+    public lateinit var imageNameElement: TextView
     private lateinit var generationTypeElement: Spinner
     private lateinit var generationModelElement: AutoCompleteTextView
     private lateinit var imageElement: ImageButton
@@ -90,6 +91,9 @@ class ParametersFragment : Fragment() {
                 arrayOf("Default Model")
             )
         )
+
+        imageNameElement = view.findViewById(R.id.imageName)
+
         generationModelElement.setText("Default Model")
         generationModelElement.threshold = 1
         CoroutineScope(Dispatchers.IO).launch { getModels() }

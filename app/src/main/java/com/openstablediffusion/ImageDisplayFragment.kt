@@ -42,6 +42,7 @@ class ImageDisplayFragment : Fragment() {
     private fun initialize() {
         mainInterface = activity as MainInterface
 
+
         val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
         view.findViewById<ImageView>(R.id.imageDisplay).setImageBitmap(bitmap)
 
@@ -54,7 +55,11 @@ class ImageDisplayFragment : Fragment() {
         generateElement.setOnClickListener { mainInterface.showParameters() }
 
         val useAsInitElement = view.findViewById<Button>(R.id.useAsInit)
-        useAsInitElement.setOnClickListener { mainInterface.setImage(bitmap) }
+        useAsInitElement.setOnClickListener {
+            val promptTemp = prompt.replace(" ", "")
+            val fileName = "stabledif$promptTemp$seedUsed.jpg"
+            mainInterface.setImage(bitmap, fileName)
+        }
 
         val saveElement = view.findViewById<Button>(R.id.save)
         saveElement.setOnClickListener { saveImage() }
