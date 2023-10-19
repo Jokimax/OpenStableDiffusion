@@ -116,7 +116,7 @@ class ParametersFragment : Fragment() {
         promptStrengthElement.setText("7")
 
         imageStrengthElement = view.findViewById(R.id.imageStrength)
-        imageStrengthElement.setText("0.7")
+        imageStrengthElement.setText("0.4")
 
         apikeyElement = view.findViewById(R.id.apikey)
         apikeyElement.addTextChangedListener(object : TextWatcher {
