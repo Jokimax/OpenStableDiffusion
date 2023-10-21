@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -12,6 +13,8 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.json.JSONArray
+import java.io.IOException
 
 class GenerationFragment : Fragment() {
     private val internet: NetworkManager = NetworkManager()
@@ -42,20 +45,27 @@ class GenerationFragment : Fragment() {
 
     // Cancel the remote generation request
     private fun cancelGeneration() {
-        if(!internet.isConnected(requireContext())){
+        try {
+            if(!internet.isConnected(requireContext())){
+                val act = activity ?: return
+                act.runOnUiThread {
+                    mainInterface.showParameters()
+                    mainInterface.displayError("An error occurred with your internet connection!")
+                }
+                return
+            }
+            if(id != null) {
+                val client = OkHttpClient()
+                val request: Request = Request.Builder().url(apiUrl + "generate/status/" + id).delete().build()
+                client.newCall(request).execute()
+            }
+            mainInterface.onCancelGeneration()
+        } catch (e: IOException) {
             val act = activity ?: return
             act.runOnUiThread {
-                mainInterface.showParameters()
-                mainInterface.displayError("An error occurred with your internet connection!")
+                mainInterface.displayError(e.toString())
             }
-            return
         }
-        if(id != null) {
-            val client = OkHttpClient()
-            val request: Request = Request.Builder().url(apiUrl + "generate/status/" + id).delete().build()
-            client.newCall(request).execute()
-        }
-        mainInterface.onCancelGeneration()
     }
 
     public fun displayWaitingTime(timeLeft: String) {

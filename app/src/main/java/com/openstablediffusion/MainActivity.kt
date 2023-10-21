@@ -113,16 +113,16 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
         runOnUiThread {
             showGeneration(generation)
         }
-        if(!internet.isConnected(this)){
-            runOnUiThread {
-                showParameters()
-                displayError("An error occurred with your internet connection!")
-            }
-            return
-        }
         val client = OkHttpClient()
         var response: Any?
         try {
+            if(!internet.isConnected(this)){
+                runOnUiThread {
+                    showParameters()
+                    displayError("An error occurred with your internet connection!")
+                }
+                return
+            }
             // Begin generating the image
             response = client.newCall(request).execute()
             response = response.body?.string()

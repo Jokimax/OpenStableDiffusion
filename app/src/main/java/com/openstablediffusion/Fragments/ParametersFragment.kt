@@ -1,7 +1,12 @@
 package com.openstablediffusion
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.preference.PreferenceManager.*
@@ -20,9 +25,11 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.MediaType.Companion.toMediaType
@@ -30,6 +37,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
+import org.json.JSONObject
+import java.io.IOException
+import java.net.URL
 import kotlin.math.ceil
 
 
@@ -312,35 +322,42 @@ class ParametersFragment : Fragment() {
     }
 
      private suspend fun getModels() {
-         if(!internet.isConnected(requireContext())){
+         try {
+             if(!internet.isConnected(requireContext())){
+                 val act = activity ?: return
+                 act.runOnUiThread {
+                     mainInterface.displayError("An error occurred with your internet connection!")
+                 }
+                 return
+             }
+             var models: Array<String> = arrayOf("Default Model")
+             val client = OkHttpClient()
+             val request = Request.Builder()
+                 .url(apiUrl + "status/models?type=image")
+                 .build()
+             var response: Any?
+
+             response = client.newCall(request).execute()
+             response = response.body?.string()
+             response = JSONArray(response)
+
+             for (i in 0 until response.length()){
+                 models += response.getJSONObject(i).get("name").toString()
+             }
              val act = activity ?: return
              act.runOnUiThread {
-                 mainInterface.displayError("An error occurred with your internet connection!")
+                 generationModelElement.setAdapter(ArrayAdapter(
+                     requireContext(),
+                     android.R.layout.simple_list_item_1,
+                     models
+                    )
+                 )
              }
-             return
-         }
-         var models: Array<String> = arrayOf("Default Model")
-         val client = OkHttpClient()
-         val request = Request.Builder()
-            .url(apiUrl + "status/models?type=image")
-            .build()
-         var response: Any?
-
-         response = client.newCall(request).execute()
-         response = response.body?.string()
-         response = JSONArray(response)
-
-         for (i in 0 until response.length()){
-             models += response.getJSONObject(i).get("name").toString()
-         }
-         val act = activity ?: return
-         act.runOnUiThread {
-             generationModelElement.setAdapter(ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_list_item_1,
-                    models
-                )
-             )
+         } catch (e: IOException) {
+             val act = activity ?: return
+             act.runOnUiThread {
+                 mainInterface.displayError(e.toString())
+             }
          }
     }
 
