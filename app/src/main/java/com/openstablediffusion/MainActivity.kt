@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
     private lateinit var errorElement: TextView
     private lateinit var generationCoroutine: Job
     private var pickedImage: Bitmap? = null
+    private var imageName: String = ""
     private var hasFocus: Boolean = true
     private val apiUrl: String = "https://stablehorde.net/api/v2/"
 
@@ -77,6 +78,10 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.container, parameters)
         fragments.changeFragment(fragmentTransaction)
+        CoroutineScope(Dispatchers.IO).launch {
+            while(!fragments.changedFragment) { delay(10) }
+            runOnUiThread { parameters.imageNameElement.text = imageName }
+        }
     }
 
     // Display generation info
@@ -235,11 +240,8 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
 
     override fun setImage(newImage: Bitmap, imageName: String) {
         pickedImage = newImage
+        this.imageName = imageName
         showParameters()
-        CoroutineScope(Dispatchers.IO).launch {
-            while(!fragments.changedFragment) { delay(10) }
-            runOnUiThread { parameters.imageNameElement.text = imageName }
-        }
     }
 
     // Allows the user to upload an image
@@ -251,7 +253,8 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
             val pickedPhoto = data.data
             if (pickedPhoto != null) {
-                parameters.imageNameElement.text = getFileName(pickedPhoto)
+                imageName = getFileName(pickedPhoto)
+                parameters.imageNameElement.text = imageName
                 pickedImage = MediaStore.Images.Media.getBitmap(this.contentResolver,pickedPhoto)
                 pickedImage = resizeImage(pickedImage!!)
             }
