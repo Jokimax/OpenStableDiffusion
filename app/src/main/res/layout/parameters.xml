@@ -233,11 +233,15 @@
 
             <Button
                 android:id="@+id/generate"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/generate"
                 android:textSize="18sp"
+                android:textColor="#ffffff"
+                android:padding="8dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_border"
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="240dp" />
         </LinearLayout>
