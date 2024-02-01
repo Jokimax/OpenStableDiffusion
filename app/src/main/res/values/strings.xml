@@ -11,7 +11,10 @@
     <string name="useInit">Use as Init</string>
     <string name="download">Download</string>
 <!--Parameters-->
+    <string name="prompt">Prompt</string>
     <string name="promptExample">A dog playing an ukulele</string>
+    <string name="negative">Negative Prompt</string>
+    <string name="negativeExample">A cat playing a guitar</string>
     <string name="height">Height</string>
     <string name="width">Width</string>
     <string name="steps">Generation Steps</string>

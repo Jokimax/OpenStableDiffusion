@@ -21,6 +21,12 @@
             android:orientation="vertical"
             android:paddingTop="600dp">
 
+            <TextView
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt" />
+
             <EditText
                 android:id="@+id/prompt"
                 android:layout_width="match_parent"
@@ -29,6 +35,23 @@
                 android:hint="@string/promptExample"
                 android:singleLine="true"
                 android:textSize="20sp" />
+
+            <TextView
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/negative"
+                android:layout_marginTop="10dp" />
+
+            <EditText
+                android:id="@+id/negativePrompt"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:hint="@string/negativeExample"
+                android:singleLine="true"
+                android:textSize="20sp" />
+
 
             <Spinner
                 android:id="@+id/type"

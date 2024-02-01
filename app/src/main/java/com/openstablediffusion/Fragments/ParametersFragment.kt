@@ -48,6 +48,7 @@ class ParametersFragment : Fragment() {
     private lateinit var view: View
     private lateinit var mainInterface: MainInterface
     private lateinit var promptElement: EditText
+    private lateinit var negativeElement: EditText
     public lateinit var imageNameElement: TextView
     private lateinit var generationTypeElement: Spinner
     private lateinit var generationModelElement: AutoCompleteTextView
@@ -86,6 +87,7 @@ class ParametersFragment : Fragment() {
         mainInterface = activity as MainInterface
 
         promptElement = view.findViewById(R.id.prompt)
+        negativeElement = view.findViewById(R.id.negativePrompt)
 
         generationTypeElement = view.findViewById(R.id.type)
         generationTypeElement.adapter = ArrayAdapter(
@@ -170,7 +172,9 @@ class ParametersFragment : Fragment() {
         val model: String = generationModelElement.text.toString()
 
         // Make sure all the necessary parameters are filled in
-        val prompt: String = promptElement.text.toString()
+        var prompt: String = promptElement.text.toString()
+        val negativePrompt: String = negativeElement.text.toString()
+        if(negativePrompt != "") prompt += " ### $negativePrompt"
         if (prompt == "") {
             mainInterface.displayError("Enter a prompt!")
             return
