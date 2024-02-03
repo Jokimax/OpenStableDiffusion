@@ -52,6 +52,7 @@ class ParametersFragment : Fragment() {
     public lateinit var imageNameElement: TextView
     private lateinit var generationTypeElement: Spinner
     private lateinit var generationModelElement: AutoCompleteTextView
+    private lateinit var samplerElement: AutoCompleteTextView
     private lateinit var imageElement: ImageButton
     private lateinit var heightElement: EditText
     private lateinit var widthElement: EditText
@@ -103,12 +104,21 @@ class ParametersFragment : Fragment() {
                 arrayOf("Default Model")
             )
         )
-
-        imageNameElement = view.findViewById(R.id.imageName)
-
         generationModelElement.setText("Default Model")
         generationModelElement.threshold = 1
         CoroutineScope(Dispatchers.IO).launch { getModels() }
+
+        samplerElement = view.findViewById(R.id.sampler)
+        samplerElement.setAdapter(ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_list_item_1,
+            arrayOf("k_dpm_2", "k_dpm_2_a", "k_dpm_adpative",
+            "k_dpm_fast", "k_dpmpp_2m", "k_dpmpp_2s_a", "k_dpmpp_sde",
+            "k_euler", "k_euler_a", "k_heun", "k_lms", "lcm", "DDIM")
+        ))
+        samplerElement.setText("k_dpm_2")
+
+        imageNameElement = view.findViewById(R.id.imageName)
 
         imageElement = view.findViewById(R.id.upload)
         imageElement.setOnClickListener { mainInterface.uploadImage() }
@@ -170,6 +180,7 @@ class ParametersFragment : Fragment() {
         val generationType: Any = generationTypeElement.selectedItem
 
         val model: String = generationModelElement.text.toString()
+        val sampler: String = samplerElement.text.toString()
 
         // Make sure all the necessary parameters are filled in
         var prompt: String = promptElement.text.toString()
@@ -217,15 +228,16 @@ class ParametersFragment : Fragment() {
         )
         // Creates the HTTP request based on selected generation type
         when (generationType) {
-            GenerationType.TXT2IMG -> txt2img(prompt, model, steps, promptStrength,
+            GenerationType.TXT2IMG -> txt2img(prompt, model, sampler, steps, promptStrength,
                 nsfw, censor, seed, height, width, headers)
-            GenerationType.IMG2IMG -> img2img(prompt, model, steps, promptStrength,
+            GenerationType.IMG2IMG -> img2img(prompt, model, sampler, steps, promptStrength,
                 nsfw, censor, seed, height, width, headers)
         }
     }
 
     private fun txt2img(prompt: String,
                         model: String,
+                        sampler: String,
                         steps: Int,
                         promptStrength: Float,
                         nsfw: Boolean,
@@ -242,7 +254,8 @@ class ParametersFragment : Fragment() {
             "steps": $steps,
             ${if(seed==""){""}else{"\"seed\": \"$seed\","}}
             "width": ${width.toInt()},
-            "height": ${height.toInt()}
+            "height": ${height.toInt()},
+            "sampler_name": "$sampler"
         }
         """.trimIndent()
         val requestBody = """
@@ -268,6 +281,7 @@ class ParametersFragment : Fragment() {
 
     private fun img2img(prompt: String,
                         model: String,
+                        sampler: String,
                         steps: Int,
                         promptStrength: Float,
                         nsfw: Boolean,
@@ -299,7 +313,8 @@ class ParametersFragment : Fragment() {
             ${if(seed==""){""}else{"\"seed\": \"$seed\","}}
             "width": ${width.toInt()},
             "height": ${height.toInt()},
-            "denoising_strength": ${1f-imageStrength}
+            "denoising_strength": ${1f-imageStrength},
+            "sampler_name": "$sampler"
         }
         """.trimIndent()
         val requestBody = """
