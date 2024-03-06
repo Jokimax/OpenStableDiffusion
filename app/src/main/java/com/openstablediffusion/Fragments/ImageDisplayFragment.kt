@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.os.Environment
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ import java.io.IOException
 class ImageDisplayFragment : Fragment() {
     private lateinit var view: View
     private lateinit var mainInterface: MainInterface
+    private lateinit var fileName: String
     public lateinit var imageData: ByteArray
     public lateinit var seedUsed: String
     public lateinit var request: Request
@@ -40,8 +42,15 @@ class ImageDisplayFragment : Fragment() {
 
 
     private fun initialize() {
-        mainInterface = activity as MainInterface
+        val localPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val preferenceWriter = localPreferences.edit()
+        var imageCount = localPreferences.getInt("imageCount", 0)
+        imageCount++
+        preferenceWriter.putInt("imageCount", imageCount)
+        preferenceWriter.apply()
+        fileName = "stabledif_$imageCount.jpg"
 
+        mainInterface = activity as MainInterface
 
         val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
         view.findViewById<ImageView>(R.id.imageDisplay).setImageBitmap(bitmap)
@@ -55,11 +64,7 @@ class ImageDisplayFragment : Fragment() {
         generateElement.setOnClickListener { mainInterface.showParameters() }
 
         val useAsInitElement = view.findViewById<Button>(R.id.useAsInit)
-        useAsInitElement.setOnClickListener {
-            val promptTemp = prompt.replace(" ", "")
-            val fileName = "stabledif$promptTemp$seedUsed.jpg"
-            mainInterface.setImage(bitmap, fileName)
-        }
+        useAsInitElement.setOnClickListener { mainInterface.setImage(bitmap, fileName) }
 
         val saveElement = view.findViewById<Button>(R.id.save)
         saveElement.setOnClickListener { saveImage() }
@@ -73,8 +78,6 @@ class ImageDisplayFragment : Fragment() {
     }
 
     private fun saveImage() {
-        val promptTemp = prompt.replace(" ", "")
-        val fileName = "stabledif$promptTemp$seedUsed.jpg"
         val imagesDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
         val imageFile = File(imagesDirectory, fileName)
         try {
