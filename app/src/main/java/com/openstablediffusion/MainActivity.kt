@@ -108,11 +108,6 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
 
     // The function that calls a post a request to AI horde
     override suspend fun generateImage(request: Request, prompt: String) {
-        // Show generation status
-        val generation = GenerationFragment()
-        runOnUiThread {
-            showGeneration(generation)
-        }
         val client = OkHttpClient()
         var response: Any?
         try {
@@ -133,9 +128,14 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
                 val temp = response.get("message").toString()
                 runOnUiThread {
                     displayError(temp)
-                    showParameters()
                 }
                 return
+            }
+
+            // Show generation status
+            val generation = GenerationFragment()
+            runOnUiThread {
+                showGeneration(generation)
             }
 
             val id = response.get("id").toString()
