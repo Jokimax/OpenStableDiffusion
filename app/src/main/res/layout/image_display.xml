@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    android:gravity="center|top"
+    android:layout_gravity="center|top"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<ScrollView
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/imageDisplay"
         android:layout_width="match_parent"
         android:layout_height="384dp"
-        android:layout_marginBottom="3dp"
-        app:layout_constraintBottom_toTopOf="@+id/seedDisplay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
+        android:layout_marginBottom="3dp" />
     <TextView
         android:id="@+id/seedDisplay"
         android:layout_width="match_parent"
@@ -26,83 +30,114 @@
         android:textAlignment="center"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/generateNew"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageDisplay" />
+        android:textIsSelectable="true" />
 
-    <Button
-        android:id="@+id/regenerate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="84dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="125dp"
-        android:text="@string/regenerate"
-        android:textColor="#ffffff"
-        android:padding="8dp"
-        android:background="@drawable/button_border"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/useAsInit"
-        app:layout_constraintTop_toBottomOf="@+id/seedDisplay" />
+<LinearLayout
+    android:layout_marginTop="3dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
+<LinearLayout
+    android:padding="8dp"
+    android:layout_weight="1.0"
+    android:layout_height="0dp"
+    android:layout_width="match_parent"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_weight="1.0"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:orientation="vertical">
+    </LinearLayout>
     <Button
         android:id="@+id/generateNew"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="137dp"
-        android:layout_marginBottom="90dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3.0"
         android:text="@string/generateNew"
         android:textColor="#ffffff"
         android:padding="8dp"
         android:background="@drawable/button_border"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/save"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seedDisplay" />
+        android:textAlignment="center" />
+    <LinearLayout
+        android:layout_weight="1.0"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:orientation="vertical">
+    </LinearLayout>
+</LinearLayout>
 
+<LinearLayout
+    android:padding="8dp"
+    android:layout_weight="1.0"
+    android:layout_height="0dp"
+    android:layout_width="match_parent"
+    android:orientation="horizontal">
     <Button
         android:id="@+id/useAsInit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="84dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="125dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3.0"
         android:text="@string/useInit"
         android:textColor="#ffffff"
         android:padding="8dp"
         android:background="@drawable/button_border"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/generateNew"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seedDisplay" />
+        android:textAlignment="center" />
+    <LinearLayout
+        android:layout_weight="1.0"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:orientation="vertical">
+    </LinearLayout>
+    <Button
+        android:id="@+id/regenerate"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3.0"
+        android:text="@string/regenerate"
+        android:textColor="#ffffff"
+        android:padding="8dp"
+        android:background="@drawable/button_border"
+        android:textSize="18sp"
+        android:textAlignment="center" />
+</LinearLayout>
 
+<LinearLayout
+    android:padding="8dp"
+    android:layout_weight="1.0"
+    android:layout_height="0dp"
+    android:layout_width="match_parent"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_weight="1.0"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:orientation="vertical">
+    </LinearLayout>
     <Button
         android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="161dp"
-        android:layout_marginTop="160dp"
-        android:layout_marginEnd="160dp"
-        android:layout_marginBottom="103dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3.0"
         android:text="@string/download"
         android:drawableLeft="@drawable/baseline_download_24"
         android:textColor="#ffffff"
         android:padding="8dp"
         android:background="@drawable/button_border"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seedDisplay" />
+        android:textAlignment="center" />
+    <LinearLayout
+        android:layout_weight="1.0"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:orientation="vertical">
+    </LinearLayout>
+</LinearLayout>
+
+</LinearLayout>
 
     <TextView
         android:id="@+id/saved"
@@ -112,9 +147,7 @@
         android:layout_marginBottom="59dp"
         android:textAlignment="center"
         android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/save" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:textStyle="bold" />
+</LinearLayout>
+</ScrollView>
+</LinearLayout>
