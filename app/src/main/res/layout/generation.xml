@@ -19,20 +19,20 @@
     android:layout_width="fill_parent"
     android:layout_height="0dp">
     <TextView
-        android:textSize="18.0sp"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:id="@id/timeLeft"
+        android:id="@+id/timeLeft"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="26.0dip"
+        android:layout_marginBottom="26dp"
         android:text="@string/waitTime"
         android:textAlignment="center" />
     <Button
-        android:textSize="40.0sp"
+        android:textSize="40sp"
         android:textColor="#ffffffff"
-        android:id="@id/cancel"
+        android:id="@+id/cancel"
         android:background="@drawable/button_border"
-        android:padding="8.0dip"
+        android:padding="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cancel" />
