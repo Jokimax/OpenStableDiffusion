@@ -64,7 +64,7 @@
 
             <AutoCompleteTextView
                 android:id="@+id/model"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="-10dp"
@@ -96,7 +96,7 @@
 
             <AutoCompleteTextView
                 android:id="@+id/sampler"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="-50dp"
