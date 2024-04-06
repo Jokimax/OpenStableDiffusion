@@ -163,7 +163,7 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
                 runOnUiThread {
                     generation.displayWaitingTime(temp)
                 }
-                delay(500)
+                delay(5000)
             }
 
             // Get the image and parse it's data
