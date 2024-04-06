@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center|top"
     android:layout_gravity="center|top"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-<ScrollView
-    android:orientation="vertical"
-    android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+
+    <ScrollView
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <ImageView
         android:id="@+id/imageDisplay"
         android:layout_width="match_parent"
         android:layout_height="384dp"
-        android:layout_marginBottom="3dp" />
+        android:layout_marginBottom="3dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
     <TextView
         android:id="@+id/seedDisplay"
         android:layout_width="match_parent"
@@ -32,49 +37,51 @@
         android:textStyle="bold"
         android:textIsSelectable="true" />
 
-<LinearLayout
-    android:layout_marginTop="3dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-<LinearLayout
-    android:padding="8dp"
-    android:layout_weight="1.0"
-    android:layout_height="0dp"
-    android:layout_width="match_parent"
-    android:orientation="horizontal">
     <LinearLayout
+        android:layout_marginTop="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1.0"
-        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+    <LinearLayout
         android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
         android:orientation="vertical">
     </LinearLayout>
     <Button
         android:id="@+id/generateNew"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3.0"
         android:text="@string/generateNew"
         android:textColor="#ffffff"
         android:padding="8dp"
         android:background="@drawable/button_border"
         android:textSize="18sp"
+        android:layout_weight="3.0"
         android:textAlignment="center" />
     <LinearLayout
-        android:layout_weight="1.0"
-        android:layout_height="match_parent"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
         android:orientation="vertical">
     </LinearLayout>
-</LinearLayout>
+    </LinearLayout>
 
-<LinearLayout
-    android:padding="8dp"
-    android:layout_weight="1.0"
-    android:layout_height="0dp"
-    android:layout_width="match_parent"
-    android:orientation="horizontal">
+    <LinearLayout
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0"
+        android:orientation="horizontal">
+
     <Button
         android:id="@+id/useAsInit"
         android:layout_width="0dp"
@@ -87,9 +94,9 @@
         android:textSize="18sp"
         android:textAlignment="center" />
     <LinearLayout
-        android:layout_weight="1.0"
-        android:layout_height="match_parent"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
         android:orientation="vertical">
     </LinearLayout>
     <Button
@@ -103,18 +110,19 @@
         android:background="@drawable/button_border"
         android:textSize="18sp"
         android:textAlignment="center" />
-</LinearLayout>
+    </LinearLayout>
 
-<LinearLayout
-    android:padding="8dp"
-    android:layout_weight="1.0"
-    android:layout_height="0dp"
-    android:layout_width="match_parent"
-    android:orientation="horizontal">
     <LinearLayout
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1.0"
-        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+    <LinearLayout
         android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
         android:orientation="vertical">
     </LinearLayout>
     <Button
@@ -130,21 +138,21 @@
         android:textSize="18sp"
         android:textAlignment="center" />
     <LinearLayout
-        android:layout_weight="1.0"
-        android:layout_height="match_parent"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
         android:orientation="vertical">
     </LinearLayout>
-</LinearLayout>
+    </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/saved"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="21dp"
-        android:layout_marginBottom="59dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
         android:textAlignment="center"
         android:textSize="22sp"
         android:textStyle="bold" />
