@@ -112,9 +112,9 @@ class ParametersFragment : Fragment() {
         samplerElement.setAdapter(ArrayAdapter(
             requireContext(),
             android.R.layout.simple_list_item_1,
-            arrayOf("k_dpm_2", "k_dpm_2_a", "k_dpm_adpative",
+            arrayOf("k_dpm_2", "k_dpm_2_a", "k_dpm_adaptive",
             "k_dpm_fast", "k_dpmpp_2m", "k_dpmpp_2s_a", "k_dpmpp_sde",
-            "k_euler", "k_euler_a", "k_heun", "k_lms", "lcm", "DDIM")
+            "k_euler", "k_euler_a", "k_heun", "k_lms", "lcm", "DDIM", "dpmsolver")
         ))
         samplerElement.setText("k_dpm_2")
 
