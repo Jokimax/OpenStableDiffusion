@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
     private var pickedImage: Bitmap? = null
     private var imageName: String = ""
     private var hasFocus: Boolean = true
+    private var isGenerating: Boolean = false
     private val apiUrl: String = "https://stablehorde.net/api/v2/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,7 +109,13 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
 
     // The function that calls a post a request to AI horde
     override suspend fun generateImage(request: Request, prompt: String) {
-        val client = OkHttpClient()
+        if(isGenerating) return
+        isGenerating = true
+        val client = OkHttpClient.Builder()
+            .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS) // Connection timeout
+            .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)   // Read timeout
+            .writeTimeout(30, java.util.concurrent.TimeUnit.SECONDS)  // Write timeout
+            .build()
         var response: Any?
         try {
             if(!internet.isConnected(this)){
@@ -116,6 +123,7 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
                     showParameters()
                     displayError("An error occurred with your internet connection!")
                 }
+                isGenerating = false
                 return
             }
             // Begin generating the image
@@ -129,6 +137,7 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
                 runOnUiThread {
                     displayError(temp)
                 }
+                isGenerating = false
                 return
             }
 
@@ -223,6 +232,7 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
                 showParameters()
             }
         }
+        isGenerating = false
     }
 
     override fun onCancelGeneration() {

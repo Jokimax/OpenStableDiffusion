@@ -116,7 +116,7 @@ class ParametersFragment : Fragment() {
             "k_dpm_fast", "k_dpmpp_2m", "k_dpmpp_2s_a", "k_dpmpp_sde",
             "k_euler", "k_euler_a", "k_heun", "k_lms", "lcm", "DDIM", "dpmsolver")
         ))
-        samplerElement.setText("k_dpm_2")
+        samplerElement.setText("DDIM")
 
         imageNameElement = view.findViewById(R.id.imageName)
 
@@ -130,7 +130,7 @@ class ParametersFragment : Fragment() {
         widthElement.setText("256")
 
         stepsElement = view.findViewById(R.id.steps)
-        stepsElement.setText("25")
+        stepsElement.setText("30")
 
         seedElement = view.findViewById(R.id.seed)
 
