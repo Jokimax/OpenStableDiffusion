@@ -124,10 +124,10 @@ class ParametersFragment : Fragment() {
         imageElement.setOnClickListener { mainInterface.uploadImage() }
 
         heightElement = view.findViewById(R.id.height)
-        heightElement.setText("256")
+        heightElement.setText("512")
 
         widthElement = view.findViewById(R.id.width)
-        widthElement.setText("256")
+        widthElement.setText("512")
 
         stepsElement = view.findViewById(R.id.steps)
         stepsElement.setText("30")
