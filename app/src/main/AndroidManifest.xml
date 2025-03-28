@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MainTheme"
         android:requestLegacyExternalStorage="true"
-        tools:targetApi="18">
+        tools:targetApi="21">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
