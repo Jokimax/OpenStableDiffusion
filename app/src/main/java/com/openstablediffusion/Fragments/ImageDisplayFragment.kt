@@ -1,5 +1,6 @@
 package com.openstablediffusion
 
+import android.content.ContentValues
 import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.os.Bundle
@@ -18,6 +19,8 @@ import kotlinx.coroutines.launch
 import okhttp3.Request
 import java.io.File
 import java.io.FileOutputStream
+import android.os.Build
+import android.provider.MediaStore
 import java.io.IOException
 
 
@@ -78,15 +81,41 @@ class ImageDisplayFragment : Fragment() {
     }
 
     private fun saveImage() {
-        val imagesDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-        val imageFile = File(imagesDirectory, fileName)
         try {
-            FileOutputStream(imageFile).use { outputStream ->
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+                val resolver = context?.contentResolver
+                if(resolver == null) throw IOException("Failed to get context")
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+                    put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                    put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                }
+
+                val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                uri?.let {
+                    resolver.openOutputStream(it)?.use { outputStream ->
+                        outputStream.write(imageData)
+                        outputStream.flush()
+                    }
+                    val savedElement = view.findViewById<TextView>(R.id.saved)
+                    savedElement.text = "Image Saved"
+                }
+            }
+            else {
+                val imagesDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                val imageFile = File(imagesDirectory, fileName)
+                FileOutputStream(imageFile).use { outputStream ->
                 outputStream.write(imageData)
                 outputStream.flush()
-                MediaScannerConnection.scanFile(context, arrayOf(imageFile.absolutePath), null, null)
+                MediaScannerConnection.scanFile(
+                    context,
+                    arrayOf(imageFile.absolutePath),
+                    null,
+                    null
+                )
                 val savedElement = view.findViewById<TextView>(R.id.saved)
                 savedElement.text = "Image Saved"
+            }
             }
         } catch (e: IOException) {
             mainInterface.displayError(e.toString())

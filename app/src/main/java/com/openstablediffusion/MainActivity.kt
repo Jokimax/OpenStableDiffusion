@@ -58,8 +58,9 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
 
     private fun initialize() {
         // Request the necessary permissions
-        val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        val permissions = arrayListOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.POST_NOTIFICATIONS)
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) permissions.add(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
         for (permission in permissions) {
             requestPermission(permission)
         }
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
 
     private fun requestPermission(permission: String) {
         val temp = ContextCompat.checkSelfPermission(this, permission)
-        if(temp == PackageManager.PERMISSION_GRANTED) {
+        if(temp != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(permission), 0)
         }
     }
