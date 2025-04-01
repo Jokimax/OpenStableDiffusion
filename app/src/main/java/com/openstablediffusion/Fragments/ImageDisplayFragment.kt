@@ -84,19 +84,29 @@ class ImageDisplayFragment : Fragment() {
         try {
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
                 val resolver = context?.contentResolver
-                if(resolver == null) throw IOException("Failed to get context")
+                if (resolver == null) throw IOException("Failed to get context")
                 val contentValues = ContentValues().apply {
                     put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
                     put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-                    put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                    put(
+                        MediaStore.Images.Media.RELATIVE_PATH,
+                        Environment.DIRECTORY_PICTURES
+                    )
+                    put(MediaStore.Images.Media.IS_PENDING, 1)
                 }
 
-                val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                val uri =
+                    resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
                 uri?.let {
                     resolver.openOutputStream(it)?.use { outputStream ->
                         outputStream.write(imageData)
                         outputStream.flush()
                     }
+                    contentValues.clear()
+                    contentValues.put(MediaStore.Images.Media.IS_PENDING, 0)
+                    resolver.update(uri, contentValues, null, null)
+
                     val savedElement = view.findViewById<TextView>(R.id.saved)
                     savedElement.text = "Image Saved"
                 }
