@@ -246,7 +246,8 @@ class ParametersFragment : Fragment() {
         {
             "params": $params,
             "prompt": "$prompt",
-            "nsfw": false
+            "nsfw": false,
+            "censor_nsfw": true,
             ${if(model=="Default Model"){""}else{"\"models\": [\"$model\"],"}}
             "r2": true
         }
@@ -305,6 +306,7 @@ class ParametersFragment : Fragment() {
             "params": $params,
             "prompt": "$prompt",
             "nsfw": false,
+            "censor_nsfw": true,
             ${if(model=="Default Model"){""}else{"\"models\": [\"$model\"],"}}
             "r2": true
         }
