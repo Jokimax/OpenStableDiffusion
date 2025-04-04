@@ -1,6 +1,5 @@
 package com.openstablediffusion
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.NotificationChannel
@@ -8,7 +7,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
@@ -19,9 +17,13 @@ import android.util.Base64
 import android.view.ViewTreeObserver
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
+import com.openstablediffusion.fragments.GenerationFragment
+import com.openstablediffusion.fragments.ImageDisplayFragment
+import com.openstablediffusion.fragments.ParametersFragment
+import com.openstablediffusion.interfaces.MainInterface
+import com.openstablediffusion.managers.FragmentManager
+import com.openstablediffusion.managers.NetworkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -36,6 +38,7 @@ import java.io.IOException
 import java.lang.Integer.max
 import java.net.URL
 import kotlin.math.floor
+import androidx.core.graphics.scale
 
 
 class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWindowFocusChangeListener {
@@ -57,22 +60,8 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
     }
 
     private fun initialize() {
-        // Request the necessary permissions
-        val permissions = arrayListOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.POST_NOTIFICATIONS)
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) permissions.add(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
-        for (permission in permissions) {
-            requestPermission(permission)
-        }
         showParameters()
         errorElement = findViewById(R.id.error)
-    }
-
-    private fun requestPermission(permission: String) {
-        val temp = ContextCompat.checkSelfPermission(this, permission)
-        if(temp != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(permission), 0)
-        }
     }
 
     @SuppressLint("CommitTransaction")
@@ -191,7 +180,7 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
                 response.getJSONArray("generations").
                 getJSONObject(0).get("seed").toString()
             val img = URL(imgUrl)
-            var imageData = img.readBytes()
+            val imageData = img.readBytes()
 
             // Send a notification and wait until app goes back to focus.
             if(!hasFocus) {
@@ -207,7 +196,7 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
                         getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                     notificationManager.createNotificationChannel(channel)
                 }
-                var notification = NotificationCompat.Builder(applicationContext, "Open Stable Diffusion")
+                val notification = NotificationCompat.Builder(applicationContext, "Open Stable Diffusion")
                     .setSmallIcon(R.drawable.baseline_image_24)
                     .setContentTitle("Generation finished")
                     .setContentText("$prompt has finished generating")
@@ -257,8 +246,8 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
 
     // Allows the user to upload an image
     override fun uploadImage() {
-        val intext = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intext,0)
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent,0)
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
@@ -282,13 +271,13 @@ class MainActivity : AppCompatActivity(), MainInterface, ViewTreeObserver.OnWind
             val aspectRatio = 3072.0/width
             width = 3072
             height = max(1, floor(height * aspectRatio).toInt())
-            temp = Bitmap.createScaledBitmap(temp, width, height, false)
+            temp = temp.scale(width, height, false)
         }
         if(height > 3072){
             val aspectRatio = 3072.0/height
             height = 3072
             width = max(1, floor(width * aspectRatio).toInt())
-            temp = Bitmap.createScaledBitmap(temp, width, height, false)
+            temp = temp.scale(width, height, false)
         }
         return temp
     }

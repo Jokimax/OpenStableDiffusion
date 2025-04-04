@@ -1,14 +1,7 @@
-package com.openstablediffusion
+package com.openstablediffusion.fragments
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.preference.PreferenceManager.*
 import android.text.Editable
 import android.text.TextWatcher
@@ -25,11 +18,12 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
+import com.openstablediffusion.R
+import com.openstablediffusion.interfaces.MainInterface
+import com.openstablediffusion.managers.NetworkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.MediaType.Companion.toMediaType
@@ -37,10 +31,10 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
-import org.json.JSONObject
 import java.io.IOException
-import java.net.URL
 import kotlin.math.ceil
+import androidx.core.net.toUri
+import androidx.core.content.edit
 
 
 class ParametersFragment : Fragment() {
@@ -78,7 +72,7 @@ class ParametersFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         view = inflater.inflate(R.layout.parameters, container, false)
         initialize()
         return view
@@ -159,7 +153,7 @@ class ParametersFragment : Fragment() {
 
         infoApikeyElement = view.findViewById(R.id.infoApikey)
         infoApikeyElement.setOnClickListener {
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://stablehorde.net/"))
+            val browserIntent = Intent(Intent.ACTION_VIEW, "https://stablehorde.net/".toUri())
             startActivity(browserIntent)
         }
 
@@ -196,19 +190,19 @@ class ParametersFragment : Fragment() {
             mainInterface.displayError("Enter a width and height")
             return
         }
-        var steps: Int? = stepsElement.text.toString().toIntOrNull()
+        val steps: Int? = stepsElement.text.toString().toIntOrNull()
         if (steps == null) {
             mainInterface.displayError("Enter a number of steps!")
             return
         }
-        var promptStrength: Float? = promptStrengthElement.text.toString().toFloatOrNull()
+        val promptStrength: Float? = promptStrengthElement.text.toString().toFloatOrNull()
         if (promptStrength == null) {
             mainInterface.displayError("Enter a prompt strength!")
             return
         }
 
         // Optional parameters
-        var apikey: String = apikeyElement.text.toString()
+        val apikey: String = apikeyElement.text.toString()
         val seed: String = seedElement.text.toString()
         val nsfw: Boolean = nsfwElement.isChecked
         val censor: Boolean = censorElement.isChecked
@@ -224,7 +218,7 @@ class ParametersFragment : Fragment() {
         val headers = mapOf(
             "Content-Type" to "application/json",
             "accept" to "application/json",
-            "apikey" to if(apikey==""){"0000000000"}else{"$apikey"}
+            "apikey" to if(apikey==""){"0000000000"}else{apikey}
         )
         // Creates the HTTP request based on selected generation type
         when (generationType) {
@@ -299,7 +293,7 @@ class ParametersFragment : Fragment() {
             return
         }
 
-        var imageStrength: Float? = imageStrengthElement.text.toString().toFloatOrNull()
+        val imageStrength: Float? = imageStrengthElement.text.toString().toFloatOrNull()
         if (imageStrength == null) {
             mainInterface.displayError("Enter an input image strength!")
             return
@@ -340,7 +334,7 @@ class ParametersFragment : Fragment() {
         mainInterface.setGenerationCoroutine(generationCoroutine)
     }
 
-     private suspend fun getModels() {
+     private fun getModels() {
          try {
              if(!internet.isConnected(requireContext())){
                  val act = activity ?: return
@@ -388,8 +382,6 @@ class ParametersFragment : Fragment() {
 
     private fun saveApikey(apikey: String) {
         val localPreferences = getDefaultSharedPreferences(requireContext())
-        val preferenceWriter = localPreferences.edit()
-        preferenceWriter.putString("apikey", apikey)
-        preferenceWriter.apply()
+        localPreferences.edit() { putString("apikey", apikey) }
     }
 }

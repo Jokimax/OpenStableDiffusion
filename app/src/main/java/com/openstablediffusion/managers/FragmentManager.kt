@@ -1,4 +1,4 @@
-package com.openstablediffusion
+package com.openstablediffusion.managers
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction

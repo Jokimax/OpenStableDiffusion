@@ -1,4 +1,4 @@
-package com.openstablediffusion
+package com.openstablediffusion.fragments
 
 import android.content.ContentValues
 import android.graphics.BitmapFactory
@@ -21,6 +21,8 @@ import java.io.File
 import java.io.FileOutputStream
 import android.os.Build
 import android.provider.MediaStore
+import com.openstablediffusion.R
+import com.openstablediffusion.interfaces.MainInterface
 import java.io.IOException
 
 
@@ -37,7 +39,7 @@ class ImageDisplayFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         view = inflater.inflate(R.layout.image_display, container, false)
         initialize()
         return view
@@ -58,7 +60,7 @@ class ImageDisplayFragment : Fragment() {
         val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
         view.findViewById<ImageView>(R.id.imageDisplay).setImageBitmap(bitmap)
 
-        view.findViewById<TextView>(R.id.seedDisplay).text = "Seed used: " + seedUsed
+        view.findViewById<TextView>(R.id.seedDisplay).text = "Seed used: $seedUsed"
 
         val regenerateElement = view.findViewById<Button>(R.id.regenerate)
         regenerateElement.setOnClickListener { regenerateImage() }
@@ -83,8 +85,7 @@ class ImageDisplayFragment : Fragment() {
     private fun saveImage() {
         try {
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
-                val resolver = context?.contentResolver
-                if (resolver == null) throw IOException("Failed to get context")
+                val resolver = context?.contentResolver ?: throw IOException("Failed to get context")
                 val contentValues = ContentValues().apply {
                     put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
                     put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")

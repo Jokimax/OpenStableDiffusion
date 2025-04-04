@@ -1,19 +1,20 @@
-package com.openstablediffusion
+package com.openstablediffusion.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.openstablediffusion.R
+import com.openstablediffusion.interfaces.MainInterface
+import com.openstablediffusion.managers.NetworkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.json.JSONArray
 import java.io.IOException
 
 class GenerationFragment : Fragment() {
@@ -28,7 +29,7 @@ class GenerationFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         view = inflater.inflate(R.layout.generation, container, false)
         initialize()
         return view
@@ -69,6 +70,6 @@ class GenerationFragment : Fragment() {
     }
 
     public fun displayWaitingTime(timeLeft: String) {
-        timerElement.text = "Estimated wait time left: "+timeLeft+" s"
+        "Estimated wait time left: $timeLeft s".also { timerElement.text = it }
     }
 }

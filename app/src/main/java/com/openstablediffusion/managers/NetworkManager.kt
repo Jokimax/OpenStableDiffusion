@@ -1,4 +1,4 @@
-package com.openstablediffusion
+package com.openstablediffusion.managers
 
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE

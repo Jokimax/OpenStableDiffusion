@@ -1,4 +1,4 @@
-package com.openstablediffusion
+package com.openstablediffusion.interfaces
 
 import android.graphics.Bitmap
 import kotlinx.coroutines.Job
