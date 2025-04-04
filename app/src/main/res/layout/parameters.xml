@@ -242,26 +242,6 @@
                 android:text="@string/infoApikey"
                 android:textColor="#0000ee"/>
 
-            <CheckBox
-                android:id="@+id/nsfw"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layoutDirection="rtl"
-                android:text="@string/nsfw"
-                android:singleLine="true"
-                android:layout_marginTop="10dp" />
-
-            <CheckBox
-                android:id="@+id/censor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layoutDirection="rtl"
-                android:text="@string/censor"
-                android:singleLine="true"
-                android:layout_marginTop="10dp" />
-
             <Button
                 android:id="@+id/generate"
                 android:layout_width="wrap_content"

@@ -58,8 +58,6 @@ class ParametersFragment : Fragment() {
     private lateinit var hideApikeyElement: ImageButton
     private lateinit var infoApikeyElement: TextView
     private var apikeyHidden: Boolean = true
-    private lateinit var nsfwElement: CheckBox
-    private lateinit var censorElement: CheckBox
     private lateinit var generateElement: Button
     private val apiUrl: String = "https://stablehorde.net/api/v2/"
 
@@ -157,10 +155,6 @@ class ParametersFragment : Fragment() {
             startActivity(browserIntent)
         }
 
-        nsfwElement = view.findViewById(R.id.nsfw)
-
-        censorElement = view.findViewById(R.id.censor)
-
         generateElement = view.findViewById(R.id.generate)
         generateElement.setOnClickListener {
             generateRequest()
@@ -204,8 +198,6 @@ class ParametersFragment : Fragment() {
         // Optional parameters
         val apikey: String = apikeyElement.text.toString()
         val seed: String = seedElement.text.toString()
-        val nsfw: Boolean = nsfwElement.isChecked
-        val censor: Boolean = censorElement.isChecked
 
         // Height and width needs to be a multiple of 64
         if(height % 64 != .0) {
@@ -223,9 +215,9 @@ class ParametersFragment : Fragment() {
         // Creates the HTTP request based on selected generation type
         when (generationType) {
             GenerationType.TXT2IMG -> txt2img(prompt, model, sampler, steps, promptStrength,
-                nsfw, censor, seed, height, width, headers)
+                seed, height, width, headers)
             GenerationType.IMG2IMG -> img2img(prompt, model, sampler, steps, promptStrength,
-                nsfw, censor, seed, height, width, headers)
+                seed, height, width, headers)
         }
     }
 
@@ -234,8 +226,6 @@ class ParametersFragment : Fragment() {
                         sampler: String,
                         steps: Int,
                         promptStrength: Float,
-                        nsfw: Boolean,
-                        censor: Boolean,
                         seed: String,
                         height: Double,
                         width: Double,
@@ -256,8 +246,7 @@ class ParametersFragment : Fragment() {
         {
             "params": $params,
             "prompt": "$prompt",
-            "nsfw": $nsfw,
-            "censor_nsfw": $censor,
+            "nsfw": false
             ${if(model=="Default Model"){""}else{"\"models\": [\"$model\"],"}}
             "r2": true
         }
@@ -278,8 +267,6 @@ class ParametersFragment : Fragment() {
                         sampler: String,
                         steps: Int,
                         promptStrength: Float,
-                        nsfw: Boolean,
-                        censor: Boolean,
                         seed: String,
                         height: Double,
                         width: Double,
@@ -317,8 +304,7 @@ class ParametersFragment : Fragment() {
             "source_image": "$imageData",
             "params": $params,
             "prompt": "$prompt",
-            "nsfw": $nsfw,
-            "censor_nsfw": $censor,
+            "nsfw": false,
             ${if(model=="Default Model"){""}else{"\"models\": [\"$model\"],"}}
             "r2": true
         }
